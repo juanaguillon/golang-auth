@@ -8,14 +8,14 @@ import (
 
 func LoadDotenv() {
 	env := os.Getenv("APP_ENV")
-	if "" == env {
+	if env == "" {
 		env = "development"
 	}
 
 	godotenv.Load(".env." + env + ".local")
-	if "test" != env {
+	if env != "test" {
 		godotenv.Load(".env.local")
 	}
 	godotenv.Load(".env." + env)
-	godotenv.Load() // The Original .env
+	godotenv.Load()
 }
