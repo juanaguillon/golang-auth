@@ -6,4 +6,6 @@ dev:
 	APP_ENV=development $(MAKE) runnodemon
 test:
 	APP_ENV=test $(MAKE) runnodemon
+db-start:
+	docker-compose up -d
 	

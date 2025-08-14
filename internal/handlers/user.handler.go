@@ -5,13 +5,20 @@ import (
 	"golang-auth/pkg"
 	"net/http"
 
-	// "golang-auth/internal/repository"
-	// "golang-auth/internal/service"
+	"golang-auth/internal/service"
 
 	"github.com/gin-gonic/gin"
 )
 
-func PostCreateUser(c *gin.Context) {
+type UserHandlerIface interface {
+	PostCreateUser(c *gin.Context)
+}
+
+type UserHandler struct {
+	userService service.UserServiceIface
+}
+
+func (uhandler *UserHandler) PostCreateUser(c *gin.Context) {
 	var createUserBody models.UserCreateRequest
 
 	if err := pkg.DisallowUnkownJSONProps(c.Request.Body, &createUserBody); err != nil {
@@ -27,6 +34,8 @@ func PostCreateUser(c *gin.Context) {
 		})
 		return
 	}
+
+	uhandler.userService.CreateUser(createUserBody)
 
 	c.JSON(http.StatusCreated, gin.H{"data": createUserBody})
 }
